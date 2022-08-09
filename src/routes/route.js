@@ -7,7 +7,11 @@ const y = require('../util/helper')
 const format = require('../validator/formatter')
 const format2 = require('../validator/formatter')
 const format3 = require('../validator/formatter')
-//underscore = ('underscore')
+underscore = ('underscore')
+const month = require('../chunk/chunk')
+const odd = require('../chunk/chunk')
+const dupl = require('../chunk/chunk')
+const object = require('../chunk/chunk')
 const router = express.Router();
 
 router.get('/test-me', function (req, res) {
@@ -20,8 +24,13 @@ router.get('/test-me', function (req, res) {
     format.result
     format2.result2
     format3.result3
+    month.arr
+    odd.num
+    dupl.dupm
+    object.compose
     res.send('My second ever api!')
 });
+
 
 
 router.get('/test-me', function(req, res){
