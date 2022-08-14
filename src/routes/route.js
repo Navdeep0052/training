@@ -8,10 +8,10 @@ const format = require('../validator/formatter')
 const format2 = require('../validator/formatter')
 const format3 = require('../validator/formatter')
 underscore = ('underscore')
-const month = require('../chunk/chunk')
-const odd = require('../chunk/chunk')
-const dupl = require('../chunk/chunk')
-const object = require('../chunk/chunk')
+const month = require('../lodash/lodash')
+const odd = require('../lodash/lodash')
+const dupl = require('../lodash/lodash')
+const object = require('../lodash/lodash')
 const router = express.Router();
 
 router.get('/test-me', function (req, res) {
