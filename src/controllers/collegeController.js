@@ -1,7 +1,7 @@
 
 const collegeModel = require("../models/collegeModel")
 const internModel = require("../models/internModel")
-const mongoose = require('mongoose')
+//const mongoose = require('mongoose')
 
 const isValid = function (value) {
       if (typeof value === "undefined" || value === null) return false;
@@ -65,26 +65,38 @@ const createCollege = async function (req, res) {
             return res.status(500).send({ status: false, message: "Error", error: err.message })
       }
 }
-const getCollegeDetails = async function (req, res) {
+
+
+let getCollegeDetails = async function (req, res) {
       try {
-            let data = req.query.name;
-            console.log(data);
-            let collegeDetails = await collegeModel.findOne({ name: data })
-            //console.log(collegeDetails)
-            let details = await internModel.find({ collegeId: collegeDetails._id }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
-            console.log(details)
-            collegeDetails = {
-                  name: collegeDetails.name,
-                  fullName: collegeDetails.fullName,
-                  logoLink: collegeDetails.logoLink,
-                  interns: details
-            }
+            data = req.query
 
-            return res.status(200).send({ status: true, data: collegeDetails })
+            // Destructure object data
+            let { collegeName } = data
+            if (!collegeName)
+                  return res.status(400).send({ status: false, message: "Missing college name in quary param" });
 
-      } catch (err) {
-            res.status(500).send({ msg: err.messege })
+            // if collegeName Is Present
+            let collegeData = await collegeModel.findOne({ name: collegeName, isDeleted: false }).lean()
+            if (!collegeData) return res.status(404).send({ status: false, message: "College Not Found" });
+
+            // is there store college Id
+            collegedId = (collegeData._id).toString()
+
+            // get All Intern detail(name,email,mobile)
+            let internData = await internModel.find({ collegeId: collegedId, isDeleted: false }).select("name email mobile")
+            if (internData.length == 0) return res.status(404).send({ status: false, message: "No intern Found" });
+
+            collegeData.interns=internData
+           
+            //  response all collage data
+            return res.status(200).send({ status: true, data: collegeData });
+            
+      }
+      catch (err) {
+            return res.status(500).send({ status: false, message: "Error", error: err.message })
       }
 }
+
 module.exports.createCollege = createCollege
 module.exports.getCollegeDetails = getCollegeDetails

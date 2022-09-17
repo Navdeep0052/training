@@ -11,7 +11,7 @@ const isValid = function (value) {
 const createIntern = async function (req, res) {
     try {
         let data = req.body
-        console.log(data)
+        
         let { name, email, mobile, collegeName } = data
         if (Object.keys(data).length === 0){
          return res.status(400).send({ status: false, message: "pls enter the data in body" })
@@ -54,7 +54,7 @@ const createIntern = async function (req, res) {
         data.collegeId = (findCollege._id).toString()
 
         let savedata = await internModel.create(data)
-        console.log(savedata)
+        
         return res.status(201).send({ status: true, data:savedata })
     }
 
