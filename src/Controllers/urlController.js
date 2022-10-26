@@ -63,8 +63,6 @@ const getShortUrl = async function (req, res) {
     try {
         let urlCode = req.params.urlCode
 
-        if (!urlCode) return res.status(400).send({ status: false, message: "urlCode is mandatory" })
-
         let cachedData = await GET_ASYNC(`${urlCode}`)
         if (cachedData) {
             let Data = JSON.parse(cachedData)
